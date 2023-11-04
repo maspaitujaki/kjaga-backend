@@ -1,0 +1,354 @@
+{
+    "openapi":"3.0.0",
+    "info": {
+      "title":"Swagger Kjaga Backend",
+      "version":"1.0",
+      "description": "Documentation for Kjaga backend",
+      "contact": {
+        "name": "Dimas Faidh Muzaki",
+        "email": "dimasfaid@gmail.com"
+      }
+    },
+    "servers": [
+      {
+        "url":"http://localhost:3001",
+        "description": "local"
+      }
+    ],
+    "externalDocs": {
+      "url": "https://github.com/maspaitujaki/backend-capstone-bangkit",
+      "description": "Private Repository"
+    },
+    "tags": [{
+      "name": "User",
+      "description": "Operations about user"
+    }],
+    "paths": {
+      "/users": {
+        "post": {
+          "operationId": "createUser",
+          "tags": ["User"],
+          "description": "Use as register",
+          "summary": "Create a user",
+          "requestBody" : {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "email" : {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "username" : {
+                      "type": "string"
+                    },
+                    "password" : {
+                      "type": "string"
+                    },
+                    "confirmPassword" : {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201" : {
+              "description": "User successfully created",
+              "content": {
+                "application/json": {
+                  "schema" : {
+                    "type": "object",
+                    "properties": {
+                      "id" : {
+                        "type": "string"
+                      },
+                      "email" : {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "username" : {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              } 
+            },
+            "400" : {
+              "description": "Username or email already registered",
+              "content": {
+                "application/json": {
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "operationId": "loginUser",
+          "tags": ["User"],
+          "description": "Use as sign in",
+          "summary": "Logs user into the system",
+          "requestBody":{
+            "required": true,
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "password":{
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200" : {
+              "description": "Successfully logged in",
+              "content": {
+                "application/json": {
+                  "schema" : {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id" : {
+                            "type": "string"
+                          },
+                          "email" : {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "username" : {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "token": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401" : {
+              "description": "Combination of username and password is not found",
+              "content": {
+                "application/json": {
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{username}":{
+        "get": {
+          "operationId": "readUserByUsername",
+          "tags": ["User"],
+          "description": "",
+          "summary": "Get user by username",
+          "parameters": [{
+            "$ref": "#/components/parameters/userUsername"
+          }],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Username not exist",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }     
+        },
+        "put": {
+          "operationId": "updateUserByUsername",
+          "tags": ["User"],
+          "description": "",
+          "summary": "Update user by username, certain field only",
+          "parameters": [{
+            "$ref": "#/components/parameters/userUsername"
+          }],
+          "requestBody":{
+            "required": true,
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "email":{
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "username":{
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": ["pria","wanita"]
+                    },
+                    "tanggalLahir":{
+                      "type": "string",
+                      "format": "date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Username not exist",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }        
+        },
+        "delete": {
+          "operationId": "deleteUserByUsername",
+          "tags": ["User"],
+          "description": "",
+          "summary": "Delete user by username",
+          "parameters": [{
+            "$ref": "#/components/parameters/userUsername"
+          }],
+          "responses": {
+            "200":{
+              "description": "Successfully deleted",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "type": "object",
+                    "properties": {
+                      "message":{
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Username not exist",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }       
+        } 
+      }
+    },
+    "components": {
+      "parameters": {
+        "userUsername": {
+          "schema":{
+            "type": "string"
+          },
+          "in": "path",
+          "name": "username",
+          "description": "Username to be read",
+          "required": true
+        }
+      },
+      "schemas": {
+        "errorMessage": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "user":{
+          "type": "object",
+          "properties": {
+            "id" : {
+              "type": "string"
+            },
+            "email" : {
+              "type": "string",
+              "format": "email"
+            },
+            "username" : {
+              "type": "string"
+            },
+            "gender": {
+              "type": "string",
+              "enum": ["pria","wanita"]
+            },
+            "tanggal_lahir":{
+              "type": "string",
+              "format": "date"
+            },
+            "umur":{
+              "type": "integer"
+            },
+            "jenis_akg":{
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updated_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  }

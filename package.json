@@ -1,0 +1,53 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "lint": "eslint ./src --ext .ts",
+    "lint-fix": "eslint ./src --ext .ts --fix",
+    "serve": "node dist/index.js",
+    "dev": "nodemon src/index.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maspaitujaki/backend-capstone-bangkit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maspaitujaki/backend-capstone-bangkit/issues"
+  },
+  "homepage": "https://github.com/maspaitujaki/backend-capstone-bangkit#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.15",
+    "@types/express": "^4.17.20",
+    "@types/jsonwebtoken": "^9.0.4",
+    "@types/node": "^20.8.10",
+    "@types/pg": "^8.10.7",
+    "@types/swagger-ui-express": "^4.1.5",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.52.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/express-validator": "^3.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "swagger-ui-express": "^5.0.0"
+  }
+}
