@@ -1,8 +1,8 @@
 runtime: nodejs18
 env: standard
 automatic_scaling:
-  min_idle_instance: 1
-  max_idle_instance: automatic
+  min_idle_instances: 1
+  max_idle_instances: automatic
   min_pending_latency: automatic
   max_pending_latency: automatic
 includes:
