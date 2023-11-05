@@ -13,6 +13,10 @@
       {
         "url":"http://localhost:3001",
         "description": "local"
+      },
+      {
+        "url": "https://capstone-bangkit-kjaga.et.r.appspot.com/",
+        "description": "App engine"
       }
     ],
     "externalDocs": {
