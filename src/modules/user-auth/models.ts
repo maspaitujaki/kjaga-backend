@@ -18,10 +18,10 @@ export interface UserAuthInfo {
 export interface UserUpdateable {
   email: string
   username: string
-  gender: 'pria' | 'wanita'
-  tanggal_lahir: Date
-  umur: number
-  jenis_akg: string
+  gender: 'male' | 'female'
+  birthdate: Date
+  age: number
+  akg_type: string
   updated_at: Date
 }
 

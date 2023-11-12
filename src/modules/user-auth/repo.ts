@@ -4,7 +4,7 @@ import { type UserUpdateable, type User } from './models'
 const userRepo = {
   selectOne: async (username: string) => {
     return await new Promise((resolve, reject) => {
-      pool.query('SELECT id, email, username, gender, tanggal_lahir, umur, jenis_akg, created_at, updated_at FROM users WHERE username = $1',
+      pool.query('SELECT id, email, username, gender, birthdate, age, akg_type, created_at, updated_at FROM users WHERE username = $1',
         [username])
         .then((result) => {
           resolve(result.rows[0])
@@ -42,8 +42,8 @@ const userRepo = {
   },
   updateUser: async (username: string, info: UserUpdateable) => {
     return await new Promise((resolve, reject) => {
-      pool.query('UPDATE users SET (email, username, gender, tanggal_lahir, umur, jenis_akg, updated_at) = ($1, $2, $3, $4, $5, $6, $7) WHERE username = $8 RETURNING id, email, username, gender, tanggal_lahir, umur, jenis_akg, created_at, updated_at',
-        [info.email, info.username, info.gender, info.tanggal_lahir, info.umur, info.jenis_akg, info.updated_at, username])
+      pool.query('UPDATE users SET (email, username, gender, birthdate, age, akg_type, updated_at) = ($1, $2, $3, $4, $5, $6, $7) WHERE username = $8 RETURNING id, email, username, gender, tanggal_lahir, umur, jenis_akg, created_at, updated_at',
+        [info.email, info.username, info.gender, info.birthdate, info.age, info.akg_type, info.updated_at, username])
         .then((result) => {
           resolve(result.rows[0])
         }).catch((error) => {

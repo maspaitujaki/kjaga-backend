@@ -60,18 +60,18 @@ const userController = {
     }
 
     const usernameParams = req.params.username
-    const { email, username, gender, tanggalLahir } = req.body
+    const { email, username, gender, tanggalLahir: birthdate } = req.body
 
-    // TODO: Tentukan jenis_akg
-    const jenisAkg = ''
+    // TODO: Tentukan akg_type
+    const akgType = ''
 
     const updateInfo: UserUpdateable = {
       email,
       username,
       gender,
-      tanggal_lahir: tanggalLahir,
-      umur: getAge(new Date(tanggalLahir)),
-      jenis_akg: jenisAkg,
+      birthdate,
+      age: getAge(new Date(birthdate)),
+      akg_type: akgType,
       updated_at: new Date()
     }
     userRepo.updateUser(usernameParams, updateInfo)

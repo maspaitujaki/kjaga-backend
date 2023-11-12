@@ -1,10 +1,10 @@
 import express, { type NextFunction, type Request, type Response } from 'express'
-import exampleRoutes from './routes/example'
 import cors from 'cors'
 import userAuthRoutes from './modules/user-auth/route'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocument from './api-doc.json'
 import * as dotenv from 'dotenv'
+import foodRoutes from './modules/food/route'
 
 dotenv.config()
 
@@ -22,7 +22,7 @@ app.use(cors(options))
 app.use(express.json())
 
 app.use('/users', userAuthRoutes)
-app.use('/example', exampleRoutes)
+app.use('/foods', foodRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript Express!')

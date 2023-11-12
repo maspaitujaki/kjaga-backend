@@ -15,7 +15,7 @@
         "description": "local"
       },
       {
-        "url": "https://capstone-bangkit-kjaga.et.r.appspot.com/",
+        "url": "https://capstone-bangkit-kjaga.et.r.appspot.com",
         "description": "App engine"
       }
     ],
@@ -23,10 +23,16 @@
       "url": "https://github.com/maspaitujaki/backend-capstone-bangkit",
       "description": "Private Repository"
     },
-    "tags": [{
+    "tags": [
+      {
       "name": "User",
       "description": "Operations about user"
-    }],
+      },
+      {
+        "name": "Food",
+        "description": "Operations about food and portions"
+      }
+    ],
     "paths": {
       "/users": {
         "post": {
@@ -223,9 +229,9 @@
                     },
                     "gender": {
                       "type": "string",
-                      "enum": ["pria","wanita"]
+                      "enum": ["male","female"]
                     },
-                    "tanggalLahir":{
+                    "birthdate":{
                       "type": "string",
                       "format": "date"
                     }
@@ -293,6 +299,108 @@
             }
           }       
         } 
+      },
+      "/foods":{
+        "get":{
+          "operationId": "getFoods",
+          "description": "Search foods",
+          "tags": ["Food"],
+          "parameters": [
+            {
+              "schema" : {
+                "type": "string"
+              },
+              "in": "query",
+              "name": "search",
+              "description": "Search food by name"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a list of foods according to search query. If query is empty then return all. . Note that the portion is default portion",
+              "content": {
+                "application/json":{
+                  "schema" :{
+                    "type": "object",
+                    "properties": {
+                      "count": { 
+                        "type": "integer"
+                      },
+                      "foods" : {
+                        "type": "array",
+                        "items" : {
+                          "type": "object",
+                          "properties": {
+                            "food": {
+                              "$ref": "#/components/schemas/food"
+                            },
+                            "portion_count":{
+                              "description": "How many available portion for this food",
+                              "type": "integer"
+                            }, 
+                            "portion":{
+                              "$ref": "#/components/schemas/portion"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/foods/{food_id}/portions": {
+        "get":{
+          "operationId": "getPortionByFoodId",
+          "tags": ["Food"],
+          "parameters": [
+            {
+              "name": "food_id",
+              "description": "The food id",
+              "in": "path",
+              "required": true,
+              "schema" : {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200":{
+              "description": "Return the portion that available for a food",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "type": "object",
+                    "properties": {
+                      "food":{
+                        "$ref": "#/components/schemas/food"
+                      },
+                      "portions":{
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/portion"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Food not exist",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "components": {
@@ -333,14 +441,14 @@
               "type": "string",
               "enum": ["pria","wanita"]
             },
-            "tanggal_lahir":{
+            "birthdate":{
               "type": "string",
               "format": "date"
             },
-            "umur":{
+            "age":{
               "type": "integer"
             },
-            "jenis_akg":{
+            "akg_type":{
               "type": "string"
             },
             "created_at": {
@@ -350,6 +458,63 @@
             "updated_at": {
               "type": "string",
               "format": "date-time"
+            }
+          }
+        },
+        "nutrition": {
+          "type": "object",
+          "properties": {
+            "energy(kkal)" : {
+              "type": "number"
+            },
+            "fat(g)" : {
+              "type": "number"
+            },
+            "cholesterol(mg)" : {
+              "type": "number"
+            },
+            "protein(g)" : {
+              "type": "number"
+            },
+            "carbohydrates(g)" : {
+              "type": "number"
+            },
+            "fiber(g)" : {
+              "type": "number"
+            },
+            "sugar(g)" : {
+              "type": "number"
+            },
+            "sodium(mg)" : {
+              "type": "number"
+            },
+            "kalium(mg)" : {
+              "type": "number"
+            }
+          }
+        },
+        "portion":{
+          "type": "object",
+          "properties": {
+            "id":{
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "nutrition":{
+              "$ref": "#/components/schemas/nutrition"
+            }
+          }
+        },
+        "food":{
+          "type": "object",
+          "properties": {
+            "id":{
+              "type": "string"
+            },
+            "name":{
+              "type": "string"
             }
           }
         }
