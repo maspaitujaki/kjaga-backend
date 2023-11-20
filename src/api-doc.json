@@ -352,6 +352,25 @@
           }
         }
       },
+      "/foods/predict" : {
+        "get": {
+          "operationId": "getUploadImageSignedUrl",
+          "tags": ["Food"],
+          "security": [
+            {
+              "bearerAuth" : []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a signed url for client to upload image to cloud storage"
+            },
+            "401": {
+              "$ref" : "#/components/responses/UnauthorizedError"
+            }
+          }
+        }
+      },
       "/foods/{food_id}/portions": {
         "get":{
           "operationId": "getPortionByFoodId",
@@ -404,6 +423,19 @@
       }
     },
     "components": {
+      "securitySchemes": {
+        "bearerAuth" :{
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "Enter the token from login \/ register"
+        }
+      },
+      "responses": {
+        "UnauthorizedError": {
+          "description": "Access token is missing or invalid"
+        }
+      },
       "parameters": {
         "userUsername": {
           "schema":{

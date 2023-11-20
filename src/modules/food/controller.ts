@@ -41,6 +41,9 @@ const foodController = {
       }).catch((error) => {
         errorHandler(error, res)
       })
+  },
+  getSignedUrl: (req: Request, res: Response) => {
+    res.send('nice')
   }
 }
 
