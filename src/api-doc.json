@@ -15,8 +15,8 @@
         "description": "local"
       },
       {
-        "url": "https://capstone-bangkit-kjaga.et.r.appspot.com",
-        "description": "App engine"
+        "url": "https://kjaga-dev.et.r.appspot.com",
+        "description": "Dev App Engine"
       }
     ],
     "externalDocs": {
