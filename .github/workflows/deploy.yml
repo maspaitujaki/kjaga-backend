@@ -24,7 +24,7 @@ jobs:
 
       # Build and push image to Google Container Registry
       - name: Build
-        run: gcloud builds submit --tag asia-southeast2-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/kjaga-backend-image:$GITHUB_SHA
+        run: gcloud builds submit --tag asia-southeast2-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/kjaga-backend-image:$GITHUB_SHA .
         
       - name: Deploy
         run: gcloud run deploy kjaga-dev --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/kjaga-backend-image:$GITHUB_SHA --platform managed --region $RUN_REGION
