@@ -19,7 +19,7 @@
         "description": "Dev App Engine"
       },
       {
-        "url": "https://kjaga-dev-vpzh6hrtya-et.a.run.app/",
+        "url": "https://kjaga-dev-vpzh6hrtya-et.a.run.app",
         "description": "Dev Cloud Run"
       }
     ],
