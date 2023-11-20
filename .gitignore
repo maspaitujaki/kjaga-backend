@@ -1,4 +1,5 @@
 .env
+.env.deploy
 node_modules
 env_variables.yaml
 /dist
