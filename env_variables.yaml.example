@@ -1,0 +1,6 @@
+env_variables:
+  JWT_SECRET: '9f1c18bb0d9624815626dbc52b726146292af6615bf225ed9ec35ab23a35e4268f9112b3477d161800c9d436c7b46c8834dbd6ac22ecf0a9d817d3dd2bf38285'
+  PG_HOST: '0.0.0.0'
+  PG_USER: 'postgres'
+  PG_PASSWORD: 'password'
+  PG_DATABASE: 'database'
