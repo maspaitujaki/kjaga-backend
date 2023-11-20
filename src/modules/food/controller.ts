@@ -28,12 +28,12 @@ const foodController = {
   getPortions: (req: Request, res: Response) => {
     const errors = validationResult(req)
 
-    const { food_id: foodId } = req.params
-
     if (!errors.isEmpty()) {
       res.status(400).json({ messsage: errors.array()[0].msg })
       return
     }
+
+    const { food_id: foodId } = req.params
 
     foodRepo.getPortionsByFoodId(foodId)
       .then((result) => {
@@ -41,9 +41,6 @@ const foodController = {
       }).catch((error) => {
         errorHandler(error, res)
       })
-  },
-  getSignedUrl: (req: Request, res: Response) => {
-    res.send('nice')
   }
 }
 

@@ -76,7 +76,6 @@ const userController = {
     }
     userRepo.updateUser(usernameParams, updateInfo)
       .then((result) => {
-        console.log(result)
         res.status(200).json({ user: result })
       }).catch((error) => {
         res.status(400).json({ message: error.message })

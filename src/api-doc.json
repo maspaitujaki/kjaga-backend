@@ -352,7 +352,7 @@
           }
         }
       },
-      "/foods/predict" : {
+      "/predict" : {
         "get": {
           "operationId": "getUploadImageSignedUrl",
           "tags": ["Food"],
@@ -361,9 +361,39 @@
               "bearerAuth" : []
             }
           ],
+          "parameters": [
+            {
+              "name": "mime_type",
+              "description": "Content Type / Mime Type of the image that will be uploaded. Limited to 'image/png' and 'image/jpeg'",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "Return a signed url for client to upload image to cloud storage"
+              "description": "Return a signed url for client to upload image to cloud storage",
+              "content": {
+                "application/josn": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "predict_id": {
+                        "type": "string"
+                      },
+                      "content_type": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "Use this url to upload image to storage. Use PUT verb and content type provided"
+                      }
+                    }
+                  }
+                }
+              }
             },
             "401": {
               "$ref" : "#/components/responses/UnauthorizedError"

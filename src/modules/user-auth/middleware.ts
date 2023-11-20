@@ -10,8 +10,6 @@ export function authenticateToken (req: Request, res: Response, next: NextFuncti
   if (token == null) return res.sendStatus(401)
 
   jwt.verify(token, process.env.JWT_SECRET as string, (err: any, user: any) => {
-    console.log(err)
-
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (err) { return res.sendStatus(403) }
 

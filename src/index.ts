@@ -5,6 +5,8 @@ import swaggerUi from 'swagger-ui-express'
 import swaggerDocument from './api-doc.json'
 import * as dotenv from 'dotenv'
 import foodRoutes from './modules/food/route'
+import morgan from 'morgan'
+import predictRoutes from './modules/predict/route'
 
 dotenv.config()
 
@@ -17,12 +19,15 @@ const options: cors.CorsOptions = {
   origin: allowedOrigins
 }
 
+app.use(morgan('tiny'))
+
 app.use(cors(options))
 
 app.use(express.json())
 
 app.use('/users', userAuthRoutes)
 app.use('/foods', foodRoutes)
+app.use('/predict', predictRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript Express!')
