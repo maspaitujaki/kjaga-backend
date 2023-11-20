@@ -13,12 +13,12 @@ jobs:
     name: Deploy to Cloud Run
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Setup gcloud CLI
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - uses: 'google-github-actions/setup-gcloud@v1'
         with:
-          version: "290.0.1"
+          version: '>= 363.0.0'
           service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
