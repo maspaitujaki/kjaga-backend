@@ -40,6 +40,22 @@ const predictController = {
       }
       return errorHandler(error, res)
     }
+  },
+  changeStatusToUploaded: async (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return errorHandler(errors.array()[0], res)
+    }
+
+    const { predict_id: predictId } = req.params
+    const { timeCreated } = req.body
+    console.log(timeCreated)
+    try {
+      await predictRepo.changeStatusToUploaded(predictId, timeCreated)
+      res.status(200).send()
+    } catch (error) {
+      return errorHandler(error, res)
+    }
   }
 }
 

@@ -15,10 +15,6 @@
         "description": "local"
       },
       {
-        "url": "https://kjaga-dev.et.r.appspot.com",
-        "description": "Dev App Engine"
-      },
-      {
         "url": "https://kjaga-dev-vpzh6hrtya-et.a.run.app",
         "description": "Dev Cloud Run"
       }
@@ -29,12 +25,16 @@
     },
     "tags": [
       {
-      "name": "User",
-      "description": "Operations about user"
+        "name": "User",
+        "description": "Operations about user"
       },
       {
         "name": "Food",
         "description": "Operations about food and portions"
+      },
+      {
+        "name": "Prediction",
+        "description": "Operations involving the AI for food recognition"
       }
     ],
     "paths": {
@@ -356,55 +356,6 @@
           }
         }
       },
-      "/predict" : {
-        "get": {
-          "operationId": "getUploadImageSignedUrl",
-          "tags": ["Food"],
-          "security": [
-            {
-              "bearerAuth" : []
-            }
-          ],
-          "parameters": [
-            {
-              "name": "mime_type",
-              "description": "Content Type / Mime Type of the image that will be uploaded. Limited to 'image/png' and 'image/jpeg'",
-              "required": true,
-              "in": "query",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Return a signed url for client to upload image to cloud storage",
-              "content": {
-                "application/josn": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "predict_id": {
-                        "type": "string"
-                      },
-                      "content_type": {
-                        "type": "string"
-                      },
-                      "url": {
-                        "type": "string",
-                        "description": "Use this url to upload image to storage. Use PUT verb and content type provided"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "401": {
-              "$ref" : "#/components/responses/UnauthorizedError"
-            }
-          }
-        }
-      },
       "/foods/{food_id}/portions": {
         "get":{
           "operationId": "getPortionByFoodId",
@@ -451,6 +402,91 @@
                   }
                 }
               }
+            }
+          }
+        }
+      },
+      "/predict" : {
+        "get": {
+          "operationId": "getUploadImageSignedUrl",
+          "tags": ["Prediction"],
+          "security": [
+            {
+              "bearerAuth" : []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "mime_type",
+              "description": "Content Type / Mime Type of the image that will be uploaded. Limited to 'image/png' and 'image/jpeg'",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a signed url for client to upload image to cloud storage",
+              "content": {
+                "application/josn": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "predict_id": {
+                        "type": "string"
+                      },
+                      "content_type": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "Use this url to upload image to storage. Use PUT verb and content type provided"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "$ref" : "#/components/responses/UnauthorizedError"
+            }
+          }
+        }
+      },
+      "/predict/{predict_id}":{
+        "post": {
+          "description": "Do not use, this endpoint is for cloud eventarc trigger",
+          "tags": ["Prediction"],
+          "parameters": [
+            {
+              "required": true,
+              "name": "predict_id",
+              "schema":{
+                "type": "string"
+              },
+              "in": "path"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeCreated":{
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
             }
           }
         }
