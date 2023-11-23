@@ -55,7 +55,7 @@
                       "type": "string",
                       "format": "email"
                     },
-                    "username" : {
+                    "name" : {
                       "type": "string"
                     },
                     "password" : {
@@ -84,7 +84,7 @@
                         "type": "string",
                         "format": "email"
                       },
-                      "username" : {
+                      "name" : {
                         "type": "string"
                       },
                       "created_at": {
@@ -97,7 +97,7 @@
               } 
             },
             "400" : {
-              "description": "Username or email already registered",
+              "description": "Email already registered",
               "content": {
                 "application/json": {
                   "schema":{
@@ -122,8 +122,9 @@
                 "schema":{
                   "type": "object",
                   "properties": {
-                    "username": {
-                      "type": "string"
+                    "email": {
+                      "type": "string",
+                      "format": "email"
                     },
                     "password":{
                       "type": "string"
@@ -151,7 +152,7 @@
                             "type": "string",
                             "format": "email"
                           },
-                          "username" : {
+                          "Name" : {
                             "type": "string"
                           }
                         }
@@ -165,7 +166,7 @@
               }
             },
             "401" : {
-              "description": "Combination of username and password is not found",
+              "description": "Combination of email and password is not found",
               "content": {
                 "application/json": {
                   "schema":{
@@ -177,14 +178,14 @@
           }
         }
       },
-      "/users/{username}":{
+      "/users/{id}":{
         "get": {
-          "operationId": "readUserByUsername",
+          "operationId": "readUserById",
           "tags": ["User"],
           "description": "",
-          "summary": "Get user by username",
+          "summary": "Get user by user Id",
           "parameters": [{
-            "$ref": "#/components/parameters/userUsername"
+            "$ref": "#/components/parameters/userId"
           }],
           "responses": {
             "200": {
@@ -198,7 +199,7 @@
               }
             },
             "400": {
-              "description": "Username not exist",
+              "description": "User not exist",
               "content": {
                 "application/json":{
                   "schema":{
@@ -210,12 +211,12 @@
           }     
         },
         "put": {
-          "operationId": "updateUserByUsername",
+          "operationId": "updateUserById",
           "tags": ["User"],
           "description": "",
-          "summary": "Update user by username, certain field only",
+          "summary": "Update user by Id, certain field only",
           "parameters": [{
-            "$ref": "#/components/parameters/userUsername"
+            "$ref": "#/components/parameters/userId"
           }],
           "requestBody":{
             "required": true,
@@ -228,7 +229,7 @@
                       "type": "string",
                       "format": "email"
                     },
-                    "username":{
+                    "name":{
                       "type": "string"
                     },
                     "gender": {
@@ -256,7 +257,7 @@
               }
             },
             "400": {
-              "description": "Username not exist",
+              "description": "User not exist",
               "content": {
                 "application/json":{
                   "schema":{
@@ -268,12 +269,12 @@
           }        
         },
         "delete": {
-          "operationId": "deleteUserByUsername",
+          "operationId": "deleteUserById",
           "tags": ["User"],
           "description": "",
-          "summary": "Delete user by username",
+          "summary": "Delete user by user's id",
           "parameters": [{
-            "$ref": "#/components/parameters/userUsername"
+            "$ref": "#/components/parameters/userId"
           }],
           "responses": {
             "200":{
@@ -292,7 +293,7 @@
               }
             },
             "400": {
-              "description": "Username not exist",
+              "description": "User not exist",
               "content": {
                 "application/json":{
                   "schema":{
@@ -507,13 +508,13 @@
         }
       },
       "parameters": {
-        "userUsername": {
+        "userId": {
           "schema":{
             "type": "string"
           },
           "in": "path",
-          "name": "username",
-          "description": "Username to be read",
+          "name": "id",
+          "description": "User's Id to be operated on",
           "required": true
         }
       },
@@ -536,7 +537,7 @@
               "type": "string",
               "format": "email"
             },
-            "username" : {
+            "name" : {
               "type": "string"
             },
             "gender": {

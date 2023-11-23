@@ -12,7 +12,7 @@ const getUploadStorageSignedUrlValidationRules = [
 predictRoutes.get('/', getUploadStorageSignedUrlValidationRules, authenticateToken, predictController.getSignedUrl)
 
 const predictIdExistValidationRules = [
-  param('predict_id').exists().custom(async username => { await predictIdExist(username) }).withMessage('Prediction request not found'),
+  param('predict_id').exists().custom(async id => { await predictIdExist(id) }).withMessage('Prediction request not found'),
   body('timeCreated').exists().withMessage('Body should contain timeCreated')
 ]
 predictRoutes.post('/:predict_id', predictIdExistValidationRules, predictController.changeStatusToUploaded)

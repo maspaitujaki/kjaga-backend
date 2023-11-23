@@ -49,7 +49,6 @@ const predictController = {
 
     const { predict_id: predictId } = req.params
     const { timeCreated } = req.body
-    console.log(timeCreated)
     try {
       await predictRepo.changeStatusToUploaded(predictId, timeCreated)
       res.status(200).send()

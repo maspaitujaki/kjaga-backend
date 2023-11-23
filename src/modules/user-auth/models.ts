@@ -3,7 +3,7 @@ import { type Request } from 'express'
 export interface User {
   id: string
   email: string
-  username: string
+  name: string
   password: string
   created_at: Date
   updated_at: Date
@@ -12,12 +12,11 @@ export interface User {
 export interface UserAuthInfo {
   id: string
   email: string
-  username: string
 }
 
 export interface UserUpdateable {
   email: string
-  username: string
+  name: string
   gender: 'male' | 'female'
   birthdate: Date
   age: number
