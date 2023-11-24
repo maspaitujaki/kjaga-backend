@@ -539,7 +539,7 @@
           ],
           "responses": {
             "200":{
-              "description": "It will return an object that contain totalNutrition for the day and four types of meal (breakfast, lunch, dinner, and snack). Also, each type has their own totalNutrition",
+              "description": "It will return an object that contain totalNutrition for the selected date and four types of meal (breakfast, lunch, dinner, and snack). Also, each meal type has their own totalNutrition. breakfast.items[].nutrition is the nutrition of the food for specified portion that already calculated againts the quantity",
               "content": {
                 "application/json":{
                   "schema": {
@@ -599,28 +599,41 @@
                     "items": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "foodId": {
-                            "type": "string"
-                          },
-                          "portionId": {
-                            "type": "string"
-                          },
-                          "quantity": {
-                            "type": "number"
-                          }
-                        }
+                        "$ref": "#/components/schemas/createDiaryRequestItem"
                       }
                     }
                   }
+                },
+                "example": {
+                  "items": [
+                    {
+                      "foodId": 2449,
+                      "portionId": 2692,
+                      "quantity": 1
+                    },
+                    {
+                      "foodId": 2449,
+                      "portionId": 4772,
+                      "quantity": 2.5
+                    }
+                  ]
                 }
               }
             }
           },
           "responses": {
             "201": {
-              "description": "nice"
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema":{
+                    "type": "object",
+                    "properties": {
+                      
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -719,7 +732,18 @@
               "$ref": "#/components/schemas/food"
             },
             "portion": {
-              "$ref": "#/components/schemas/portion"
+              "type": "object",
+              "properties": {
+                "id":{
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "nutrition":{
+              "$ref": "#/components/schemas/nutrition"
             },
             "quantity": {
               "type": "number"
@@ -794,6 +818,20 @@
             },
             "name":{
               "type": "string"
+            }
+          }
+        },
+        "createDiaryRequestItem": {
+          "type": "object",
+          "properties": {
+            "foodId": {
+              "type": "integer"
+            },
+            "portionId": {
+              "type": "integer"
+            },
+            "quantity": {
+              "type": "number"
             }
           }
         }

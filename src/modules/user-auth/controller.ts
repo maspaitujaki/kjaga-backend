@@ -95,7 +95,7 @@ const userController = {
       .then((user) => {
         const hashedPassword = crypto.createHash('md5').update(password).digest('hex')
 
-        if (hashedPassword !== user.password) {
+        if (user === undefined || hashedPassword !== user.password) {
           res.status(401).json({ message: 'email and password combination not found' })
           return
         }
