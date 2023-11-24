@@ -41,6 +41,16 @@ const userController = {
   getUserById: (req: Request, res: Response) => {
     res.status(200).json({ user: (req as AuthenticatedRequest).user })
   },
+  getUserByAuth: (req: Request, res: Response) => {
+    const { id } = (req as AuthenticatedRequest).user
+
+    userRepo.selectOne(id)
+      .then((result) => {
+        res.status(200).json({ user: result })
+      }).catch((error) => {
+        res.status(400).json({ message: error.message })
+      })
+  },
   updateUserById: (req: Request, res: Response) => {
     const { id } = req.params
     const { email, name, gender, birthdate } = req.body

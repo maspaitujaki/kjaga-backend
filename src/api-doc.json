@@ -35,6 +35,10 @@
       {
         "name": "Prediction",
         "description": "Operations involving the AI for food recognition"
+      },
+      {
+        "name": "Tracker",
+        "description": "Operations involving meal history and nutrition"
       }
     ],
     "paths": {
@@ -105,6 +109,31 @@
                   }
                 }
               }
+            }
+          }
+        },
+        "get": {
+          "operationId": "readUserByAuth",
+          "summary": "Get user info by auth token",
+          "tags": ["User"],
+          "security": [
+            {
+              "bearerAuth" : []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            },
+            "401": {
+              "$ref" : "#/components/responses/UnauthorizedError"
             }
           }
         }
@@ -409,6 +438,7 @@
       },
       "/predict" : {
         "get": {
+          "summary": "This operation will return a signed url for the app to upload image directly into storage",
           "operationId": "getUploadImageSignedUrl",
           "tags": ["Prediction"],
           "security": [
@@ -458,7 +488,7 @@
       },
       "/predict/{predict_id}":{
         "post": {
-          "description": "Do not use, this endpoint is for cloud eventarc trigger",
+          "summary": "Do not use, this endpoint is for cloud trigger",
           "tags": ["Prediction"],
           "parameters": [
             {
@@ -491,6 +521,109 @@
             }
           }
         }
+      },
+      "/meal-diaries":{
+        "get":{
+          "operationId": "getMealDiaries",
+          "tags": ["Tracker"],
+          "summary": "Get the nutrition and meal diary for a particular day of a user",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/diaryDate"
+            }
+          ],
+          "responses": {
+            "200":{
+              "description": "It will return an object that contain totalNutrition for the day and four types of meal (breakfast, lunch, dinner, and snack). Also, each type has their own totalNutrition",
+              "content": {
+                "application/json":{
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "totalNutrition":{
+                        "$ref": "#/components/schemas/nutrition"
+                      },
+                      "breakfast":{
+                        "$ref": "#/components/schemas/mealDiariesReportPerType"
+                      },
+                      "lunch":{
+                        "$ref": "#/components/schemas/mealDiariesReportPerType"
+                      },
+                      "dinner":{
+                        "$ref": "#/components/schemas/mealDiariesReportPerType"
+                      },
+                      "snack":{
+                        "$ref": "#/components/schemas/mealDiariesReportPerType"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["Tracker"],
+          "summary": "Add new meal consumption diaries. Accept array",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/diaryDate"
+            },
+            {
+              "required": true,
+              "name": "mealType",
+              "description": "Meal type (breakfast, lunch, dinner, or snack)",
+              "schema":{
+                "type": "string",
+                "enum": ["breakfast", "lunch", "dinner", "snack"]
+              },
+              "in": "query"
+            }
+          ],
+          "requestBody":{
+            "content": {
+              "application/json":{
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "foodId": {
+                            "type": "string"
+                          },
+                          "portionId": {
+                            "type": "string"
+                          },
+                          "quantity": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "nice"
+            }
+          }
+        }
       }
     },
     "components": {
@@ -516,6 +649,16 @@
           "name": "id",
           "description": "User's Id to be operated on",
           "required": true
+        },
+        "diaryDate": {
+          "name": "date",
+          "description": "Date of the diary (YYYY-MM-DD). If not provided, then the default is today based on server time",
+          "in": "query",
+          "required": false,
+          "schema":{
+            "type": "string",
+            "format": "date"
+          }
         }
       },
       "schemas": {
@@ -527,40 +670,73 @@
             }
           }
         },
-        "user":{
+        "user": {
           "type": "object",
           "properties": {
-            "id" : {
-              "type": "string"
+            "user":{
+              "type": "object",
+              "properties": {
+                "id" : {
+                  "type": "string"
+                },
+                "email" : {
+                  "type": "string",
+                  "format": "email"
+                },
+                "name" : {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string",
+                  "enum": ["pria","wanita"]
+                },
+                "birthdate":{
+                  "type": "string",
+                  "format": "date"
+                },
+                "age":{
+                  "type": "integer"
+                },
+                "akg_type":{
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        },
+        "mealDiariesItem": {
+          "type": "object",
+          "properties": {
+            "food": {
+              "$ref": "#/components/schemas/food"
             },
-            "email" : {
-              "type": "string",
-              "format": "email"
+            "portion": {
+              "$ref": "#/components/schemas/portion"
             },
-            "name" : {
-              "type": "string"
+            "quantity": {
+              "type": "number"
+            }
+          }
+        },
+        "mealDiariesReportPerType": {
+          "type": "object",
+          "properties": {
+            "totalNutrition":{
+              "$ref": "#/components/schemas/nutrition"
             },
-            "gender": {
-              "type": "string",
-              "enum": ["pria","wanita"]
-            },
-            "birthdate":{
-              "type": "string",
-              "format": "date"
-            },
-            "age":{
-              "type": "integer"
-            },
-            "akg_type":{
-              "type": "string"
-            },
-            "created_at": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "updated_at": {
-              "type": "string",
-              "format": "date-time"
+            "items": {
+              "type": "array",
+              "items":{
+                "$ref": "#/components/schemas/mealDiariesItem"
+              }
             }
           }
         },
