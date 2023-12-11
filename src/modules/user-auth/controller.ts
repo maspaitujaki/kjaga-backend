@@ -109,6 +109,31 @@ const userController = {
       }).catch((error) => {
         res.status(401).json({ message: error })
       })
+  },
+  userLoginV2: (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ messsage: errors.array()[0].msg })
+    }
+    const { email, password } = req.query
+    userRepo.selectOneAuth(email as unknown as string)
+      .then((user) => {
+        const hashedPassword = crypto.createHash('md5').update(password as unknown as string).digest('hex')
+
+        if (user === undefined || hashedPassword !== user.password) {
+          res.status(401).json({ message: 'email and password combination not found' })
+          return
+        }
+        const userInfo = {
+          id: user.id,
+          email: user.email,
+          name: user.name
+        }
+        const token = generateAccessToken(userInfo)
+        res.status(200).json({ user: userInfo, token })
+      }).catch((error) => {
+        res.status(401).json({ message: error })
+      })
   }
 }
 

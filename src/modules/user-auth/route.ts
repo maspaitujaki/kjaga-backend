@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import userController from './controller'
 import { authenticateToken, checkUserWithIdExist } from './middleware'
 
@@ -34,5 +34,11 @@ const loginValidationRules = [
   body('password').exists().withMessage('Please provide password')
 ]
 userAuthRoutes.post('/login', loginValidationRules, userController.userLogin)
+
+const loginV2ValidationRules = [
+  query('email').exists().withMessage('Please provide email'),
+  query('password').exists().withMessage('Please provide password')
+]
+userAuthRoutes.post('/loginV2', loginV2ValidationRules, userController.userLoginV2)
 
 export default userAuthRoutes
