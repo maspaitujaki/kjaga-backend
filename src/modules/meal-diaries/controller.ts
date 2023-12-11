@@ -114,9 +114,13 @@ const mealDiariesController = {
       result.lunch = multiplyNutritionWithQuantity(result.lunch)
       result.dinner = multiplyNutritionWithQuantity(result.dinner)
       result.snack = multiplyNutritionWithQuantity(result.snack)
+      const akg = await mealDiariesRepo.readUserAdequacyRate(userId)
 
       const completeDiaryReport = calculateCompleteDiaryReport(result)
-      res.status(200).json(completeDiaryReport)
+      res.status(200).json({
+        ...completeDiaryReport,
+        akg
+      })
     } catch (error) {
       errorHandler(error, res)
     }

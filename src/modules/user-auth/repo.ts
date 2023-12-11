@@ -34,8 +34,8 @@ const userRepo = {
   },
   createOne: async (user: User) => {
     return await new Promise((resolve, reject) => {
-      pool.query('INSERT INTO users (id, email, password, name, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, email, name, created_at, updated_at',
-        [user.id, user.email, user.password, user.name, user.created_at, user.updated_at]
+      pool.query('INSERT INTO users (id, email, password, name, akg_type, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, email, name, created_at, updated_at',
+        [user.id, user.email, user.password, user.name, 'default_m', user.created_at, user.updated_at]
       ).then((result) => {
         resolve(result.rows[0])
       }).catch((error) => {

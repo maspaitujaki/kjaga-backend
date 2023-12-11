@@ -1,4 +1,5 @@
 import pool from '../../postgres'
+import { type Nutrition } from '../food/models'
 import { type mealType, type createDiaryRequestItem, type CompleteDiary } from './models'
 
 const mealDiariesRepo = {
@@ -36,6 +37,26 @@ const mealDiariesRepo = {
           })
         })
         .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  readUserAdequacyRate: async (userId: string): Promise<Nutrition> => {
+    return await new Promise((resolve, reject) => {
+      pool.query(`
+      select to_jsonb(at2.*) - 'id' - 'name' - 'gender' - 'body_height(cm)' - 'body_weight(kg)' - 'age_bottom_range' - 'age_top_range' nutrition
+      from akg_types at2 
+      join users u
+      on at2."name" = u.akg_type 
+      where u.id = $1
+      `,
+      [userId])
+        .then((result) => {
+          if (result.rowCount > 0) {
+            resolve(result.rows[0].nutrition)
+          }
+          throw new Error('User not found')
+        }).catch((error) => {
           reject(error)
         })
     })
