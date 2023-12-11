@@ -559,6 +559,9 @@
                       },
                       "snack":{
                         "$ref": "#/components/schemas/mealDiariesReportPerType"
+                      },
+                      "akg": {
+                        "$ref": "#/components/schemas/nutrition"
                       }
                     }
                   }
