@@ -76,6 +76,9 @@
                 "schema" : {
                   "type": "object",
                   "properties": {
+                    "error":{
+                      "type": "boolean"
+                    },
                     "email" : {
                       "type": "string",
                       "format": "email"
@@ -192,6 +195,9 @@
                   "schema" : {
                     "type": "object",
                     "properties": {
+                      "error":{
+                        "type": "boolean"
+                      },
                       "user": {
                         "type": "object",
                         "properties": {
