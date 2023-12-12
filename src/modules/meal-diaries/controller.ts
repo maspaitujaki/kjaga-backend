@@ -1,6 +1,6 @@
 import { type Response, type Request } from 'express'
 import { validationResult } from 'express-validator'
-import { type DiaryReport, type CompleteDiary, type CompleteDiaryReport, type Diary, type createDiaryQuery, type createDiaryRequest } from './models'
+import { type DiaryReport, type CompleteDiary, type CompleteDiaryReport, type Diary, type createDiaryQuery, type createDiaryRequest, type createDiaryRequestItem } from './models'
 import mealDiariesRepo from './repo'
 import { type AuthenticatedRequest } from '../user-auth/models'
 import errorHandler from '../../errorHandler'
@@ -75,7 +75,19 @@ const mealDiariesController = {
 
     const { date, mealType } = req.query as unknown as createDiaryQuery
     const { id: userId } = (req as unknown as AuthenticatedRequest).user
-    const { items: diaries } = req.body as createDiaryRequest
+    const diaries: createDiaryRequestItem[] = []
+    const contentType = req.is('application/*')
+    if (contentType === 'application/json') {
+      const { items } = req.body as createDiaryRequest
+      diaries.concat(items)
+    } else if (contentType === 'application/x-www-form-urlencoded') {
+      const { foodId, portionId, quantity } = req.body
+      diaries.push({
+        foodId,
+        portionId,
+        quantity
+      })
+    }
 
     const inserted: any[] = []
     const notInserted: any[] = []

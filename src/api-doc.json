@@ -337,6 +337,29 @@
           "requestBody":{
             "required": true,
             "content": {
+              "application/x-www-form-urlencoded":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "email":{
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "name":{
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": ["male","female"]
+                    },
+                    "birthdate":{
+                      "type": "string",
+                      "format": "date"
+                    }
+                  },
+                  "required": ["email", "name", "gender", "birthdate"]
+                }
+              },
               "application/json":{
                 "schema":{
                   "type": "object",
@@ -659,7 +682,7 @@
         },
         "post": {
           "tags": ["Tracker"],
-          "summary": "Add new meal consumption diaries. Accept array",
+          "summary": "Add new meal consumption diaries",
           "security": [
             {
               "bearerAuth": []
@@ -682,6 +705,11 @@
           ],
           "requestBody":{
             "content": {
+              "application/x-www-form-urlencoded":{
+                "schema": {
+                  "$ref": "#/components/schemas/createDiaryRequestItem"
+                }
+              },
               "application/json":{
                 "schema": {
                   "type": "object",
@@ -923,7 +951,8 @@
             "quantity": {
               "type": "number"
             }
-          }
+          },
+          "required": ["foodId", "portionId", "quantity"]
         }
       }
     }
