@@ -51,6 +51,27 @@
           "requestBody" : {
             "required": true,
             "content": {
+              "application/x-www-form-urlencoded": {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "email" : {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "name" : {
+                      "type": "string"
+                    },
+                    "password" : {
+                      "type": "string"
+                    },
+                    "confirmPassword" : {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["email", "name", "password", "confirmPassword"]
+                }
+              },
               "application/json": {
                 "schema" : {
                   "type": "object",
