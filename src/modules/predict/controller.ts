@@ -5,6 +5,7 @@ import { generateV4UploadSignedUrl } from '../../cloud/getUploadStorageSignedUrl
 import crypto from 'crypto'
 import predictRepo from './repo'
 import { type AuthenticatedRequest } from '../user-auth/models'
+import foodRepo from '../food/repo'
 
 const predictController = {
   getSignedUrl: async (req: Request, res: Response) => {
@@ -68,14 +69,21 @@ const predictController = {
       while (true) {
         const result = await predictRepo.getPredictedValue(predictId) as any
         if (result.status === 'DONE') {
-          let foods = result.result
-          foods = foods.replace(/'/g, '"')
-          foods = JSON.parse(foods)
-          console.log(foods)
+          const foods = []
+          let foodsNameString = result.result
+          foodsNameString = foodsNameString.replace(/'/g, '"')
+          const foodsNameArr = JSON.parse(foodsNameString) as string[]
+          for (const food of foodsNameArr) {
+            const keywords = food.toLowerCase().split(' ').map((word) => `%${word}%`)
+            const foodResult = await foodRepo.searchFoodWithDefaultPortion(keywords) as any
+            if (foodResult.count > 0) {
+              foods.push(foodResult.foods[0])
+            }
+          }
           return res.status(200).send({ foods })
         }
         if (i === 10) {
-          throw Error('Request timeout, our AI is busy')
+          throw Error('Request timeout, our AI is busy at the moment')
         }
         i = i + 1
         await sleep(4000)

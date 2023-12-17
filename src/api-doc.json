@@ -623,10 +623,22 @@
                   "schema": {
                     "type": "object",
                     "properties": {
-                      "foods": {
+                      "foods" : {
                         "type": "array",
-                        "items": {
-                          "type": "string"
+                        "items" : {
+                          "type": "object",
+                          "properties": {
+                            "food": {
+                              "$ref": "#/components/schemas/food"
+                            },
+                            "portion_count":{
+                              "description": "How many available portion for this food",
+                              "type": "integer"
+                            }, 
+                            "portion":{
+                              "$ref": "#/components/schemas/portion"
+                            }
+                          }
                         }
                       }
                     }

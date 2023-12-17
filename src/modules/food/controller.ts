@@ -16,7 +16,7 @@ const foodController = {
         })
     } else {
       // eslint-disable-next-line @typescript-eslint/no-base-to-string
-      const keywords = search.toString().split(' ').map((word) => `%${word}%`)
+      const keywords = search.toString().toLowerCase().split(' ').map((word) => `%${word}%`)
       foodRepo.searchFoodWithDefaultPortion(keywords)
         .then((result) => {
           res.status(200).json(result)
