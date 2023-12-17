@@ -68,7 +68,11 @@ const predictController = {
       while (true) {
         const result = await predictRepo.getPredictedValue(predictId) as any
         if (result.status === 'DONE') {
-          return res.status(200).send({ predictions: result.result })
+          let foods = result.result
+          foods = foods.replace(/'/g, '"')
+          foods = JSON.parse(foods)
+          console.log(foods)
+          return res.status(200).send({ foods })
         }
         if (i === 10) {
           throw Error('Request timeout, our AI is busy')
@@ -77,6 +81,7 @@ const predictController = {
         await sleep(4000)
       }
     } catch (error) {
+      console.log(error)
       return errorHandler(error, res)
     }
   }

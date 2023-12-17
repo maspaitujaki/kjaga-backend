@@ -618,6 +618,21 @@
           ],
           "responses": {
             "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "foods": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "description": "The prediction result is ready"
             }
           }
