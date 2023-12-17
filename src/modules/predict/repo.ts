@@ -39,6 +39,17 @@ const predictRepo = {
           reject(error)
         })
     })
+  },
+  getPredictedValue: async (predictId: string) => {
+    return await new Promise((resolve, reject) => {
+      pool.query('SELECT status, result FROM predictions WHERE id = $1',
+        [predictId])
+        .then((result) => {
+          resolve(result.rows[0])
+        }).catch((error) => {
+          reject(error)
+        })
+    })
   }
 }
 

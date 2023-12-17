@@ -603,8 +603,8 @@
         }
       },
       "/predict/{predict_id}":{
-        "post": {
-          "summary": "Do not use, this endpoint is for cloud trigger",
+        "get": {
+          "summary": "Get the prediction",
           "tags": ["Prediction"],
           "parameters": [
             {
@@ -616,24 +616,9 @@
               "in": "path"
             }
           ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "timeCreated":{
-                      "type": "string",
-                      "format": "date-time"
-                    }
-                  }
-                }
-              }
-            }
-          },
           "responses": {
             "200": {
-              "description": "Success"
+              "description": "The prediction result is ready"
             }
           }
         }

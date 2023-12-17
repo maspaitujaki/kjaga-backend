@@ -55,7 +55,34 @@ const predictController = {
     } catch (error) {
       return errorHandler(error, res)
     }
+  },
+
+  returnPredictedValue: async (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return errorHandler(errors.array()[0], res)
+    }
+    const { predict_id: predictId } = req.params
+    try {
+      let i = 1
+      while (true) {
+        const result = await predictRepo.getPredictedValue(predictId) as any
+        if (result.status === 'DONE') {
+          return res.status(200).send({ predictions: result.result })
+        }
+        if (i === 10) {
+          throw Error('Request timeout, our AI is busy')
+        }
+        i = i + 1
+        await sleep(4000)
+      }
+    } catch (error) {
+      return errorHandler(error, res)
+    }
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const sleep = async (ms = 0) => await new Promise((resolve) => setTimeout(resolve, ms))
 
 export default predictController
