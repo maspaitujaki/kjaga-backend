@@ -68,7 +68,10 @@ const predictController = {
       let i = 1
       while (true) {
         const result = await predictRepo.getPredictedValue(predictId) as any
-        if (result.status === 'DONE') {
+
+        if (result.status === 'FAILED' || result.result === '') {
+          throw Error('Sorry, our AI failed to detect food on your image')
+        } else if (result.status === 'DONE') {
           const foods = []
           let foodsNameString = result.result
           foodsNameString = foodsNameString.replace(/'/g, '"')
@@ -82,9 +85,11 @@ const predictController = {
           }
           return res.status(200).send({ foods })
         }
+
         if (i === 10) {
           throw Error('Request timeout, our AI is busy at the moment')
         }
+
         i = i + 1
         await sleep(4000)
       }
