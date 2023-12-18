@@ -565,11 +565,12 @@
           "parameters": [
             {
               "name": "mime_type",
-              "description": "Content Type / Mime Type of the image that will be uploaded. Limited to 'image/png' and 'image/jpeg'",
+              "description": "Content Type / Mime Type of the image that will be uploaded.",
               "required": true,
               "in": "query",
               "schema": {
-                "type": "string"
+                "type": "string",
+                "enum": ["image/png", "image/jpeg", "application/octet-stream", "multipart/form-data"]
               }
             }
           ],

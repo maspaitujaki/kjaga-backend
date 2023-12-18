@@ -11,7 +11,7 @@ const predictController = {
   getSignedUrl: async (req: Request, res: Response) => {
     const errors = validationResult(req)
 
-    const allowedTypes = ['image/png', 'image/jpeg']
+    const allowedTypes = ['image/png', 'image/jpeg', 'application/octet-stream', 'multipart/form-data']
 
     if (!errors.isEmpty()) {
       res.status(400).json({ messsage: errors.array()[0].msg })
@@ -19,7 +19,7 @@ const predictController = {
     }
     const mimeType = req.query.mime_type as string
     if (!allowedTypes.includes(mimeType)) {
-      res.status(400).json({ message: 'Mime type is limited to "image/jpeg" and "image/png"' })
+      res.status(400).json({ message: 'Mime type is limited.' })
       return
     }
 
