@@ -69,7 +69,7 @@ const predictController = {
       while (true) {
         const result = await predictRepo.getPredictedValue(predictId) as any
 
-        if (result.status === 'FAILED' || result.result === '') {
+        if (result.status === 'FAILED') {
           throw Error('Sorry, our AI failed to detect food on your image')
         } else if (result.status === 'DONE') {
           const foods = []

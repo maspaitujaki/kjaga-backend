@@ -578,7 +578,7 @@
             "200": {
               "description": "Return a signed url for client to upload image to cloud storage",
               "content": {
-                "application/josn": {
+                "application/json": {
                   "schema": {
                     "type": "object",
                     "properties": {
