@@ -27,3 +27,6 @@ npm run dev
 ```
 
 All endpoints available are documented using OpenAPI Swagger. Access it through [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
+
+### Deployment
+Use the Dockerfile provided to deliver the service, in this case we use Cloud Build, Artifact Registry, and Cloud Run
