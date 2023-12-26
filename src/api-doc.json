@@ -42,6 +42,89 @@
       }
     ],
     "paths": {
+      "/users/registerV2": {
+        "post": {
+          "operationId": "registerUserV2",
+          "tags": ["User"],
+          "description": "Use as sign up",
+          "summary": "V2 use query instead of body",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "name",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "password",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "confirmPassword",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201" : {
+              "description": "User successfully created",
+              "content": {
+                "application/json": {
+                  "schema" : {
+                    "type": "object",
+                    "properties": {
+                      "error":{
+                        "type": "boolean"
+                      },
+                      "id" : {
+                        "type": "string"
+                      },
+                      "email" : {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "name" : {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              } 
+            },
+            "400" : {
+              "description": "Email already registered",
+              "content": {
+                "application/json": {
+                  "schema":{
+                    "$ref": "#/components/schemas/errorMessage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/users": {
         "post": {
           "operationId": "createUser",

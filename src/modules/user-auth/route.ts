@@ -14,6 +14,7 @@ const createUserValidationRules = [
 
 userAuthRoutes.get('/', authenticateToken, userController.getUserByAuth)
 userAuthRoutes.post('/', createUserValidationRules, userController.createNewUser)
+userAuthRoutes.post('/registerV2', userController.createNewUserV2)
 
 const idValidationRules = [
   param('id').exists().withMessage('Bad request: please provide id')

@@ -37,6 +37,41 @@ const userController = {
         res.status(400).json({ message: error.message, error: true })
       })
   },
+  createNewUserV2: (req: Request, res: Response): void => {
+    const errors = validationResult(req)
+    let { email, name, password, confirmPassword } = req.query
+    email = email as unknown as string
+    name = name as unknown as string
+    password = password as unknown as string
+    confirmPassword = confirmPassword as unknown as string
+    if (!errors.isEmpty()) {
+      res.status(400).json({ messsage: errors.array()[0].msg, error: true })
+      return
+    }
+
+    const hashedPassword = crypto.createHash('md5').update(password).digest('hex')
+    const hashedCpassword = crypto.createHash('md5').update(confirmPassword).digest('hex')
+    if (hashedCpassword !== hashedPassword) {
+      res.status(400).json({ message: "Confirm password don't match password", error: true })
+      return
+    }
+
+    const now = new Date()
+    const newUser: User = {
+      id: crypto.randomUUID(),
+      email,
+      name,
+      password: hashedPassword,
+      created_at: now,
+      updated_at: now
+    }
+    userRepo.createOne(newUser)
+      .then((result) => {
+        res.status(201).json({ ...(result as object), error: false })
+      }).catch((error) => {
+        res.status(400).json({ message: error.message, error: true })
+      })
+  },
   getUserById: (req: Request, res: Response) => {
     res.status(200).json({ user: (req as AuthenticatedRequest).user })
   },
