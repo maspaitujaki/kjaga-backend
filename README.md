@@ -4,6 +4,9 @@ This service use the following tech stacks:
 2. Node JS
 3. PostgreSQL
 4. Google's Cloud Storage
+5. Google Pub Sub
+6. Cloud Run
+7. Compute Engine
 
 ## Getting Started
 
